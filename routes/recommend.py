@@ -3,7 +3,7 @@ from services.database import load_recipe_data
 from utils.recommendation import build_vectorizer, recommend
 from services.image_detection import detect_ingredients_from_image
 import tempfile
-# from flasgger.utils import swag_from
+from flasgger.utils import swag_from
 
 recommend_bp = Blueprint('recommend', __name__)
 
@@ -19,54 +19,54 @@ def load_model():
         df_global, vectorizer_global, matrix_global = build_vectorizer(df)
 
 @recommend_bp.route('/recommend', methods=['POST'])
-# @swag_from({
-#     'tags': ['Recommendation'],
-#     'summary': 'Rekomendasi resep berdasarkan gambar',
-#     'consumes': ['multipart/form-data'],
-#     'parameters': [
-#         {
-#             'name': 'image',
-#             'in': 'formData',
-#             'type': 'file',
-#             'required': True,
-#             'description': 'Gambar bahan makanan'
-#         }
-#     ],
-#     'responses': {
-#         '200': {
-#             'description': 'Berhasil memberikan rekomendasi',
-#             'examples': {
-#                 'application/json': {
-#                     "status": "success",
-#                     "ingredients_detected": ["telur", "bawang merah"],
-#                     "data": [
-#                         {
-#                             "judul": "Telur Dadar Sehat",
-#                             "bahan": ["telur", "bawang merah", "garam"],
-#                             "bahan_tidak_terdeteksi": ["garam"],
-#                             "langkah": {
-#                                 "1": {
-#                                     "deskripsi": "Kocok telur dan bawang.",
-#                                     "gambar": []
-#                                 }
-#                             },
-#                             "kalori": 250,
-#                             "karbohidrat": 5,
-#                             "lemak": 20,
-#                             "protein": 12,
-#                             "metode_memasak": "goreng",
-#                             "similarity_score": 0.4,
-#                             "gambar": "https://..."
-#                         }
-#                     ]
-#                 }
-#             }
-#         },
-#         '400': {
-#             'description': 'Gambar tidak ditemukan dalam request'
-#         }
-#     }
-# })
+@swag_from({
+    'tags': ['Recommendation'],
+    'summary': 'Rekomendasi resep berdasarkan gambar',
+    'consumes': ['multipart/form-data'],
+    'parameters': [
+        {
+            'name': 'image',
+            'in': 'formData',
+            'type': 'file',
+            'required': True,
+            'description': 'Gambar bahan makanan'
+        }
+    ],
+    'responses': {
+        '200': {
+            'description': 'Berhasil memberikan rekomendasi',
+            'examples': {
+                'application/json': {
+                    "status": "success",
+                    "ingredients_detected": ["telur", "bawang merah"],
+                    "data": [
+                        {
+                            "judul": "Telur Dadar Sehat",
+                            "bahan": ["telur", "bawang merah", "garam"],
+                            "bahan_tidak_terdeteksi": ["garam"],
+                            "langkah": {
+                                "1": {
+                                    "deskripsi": "Kocok telur dan bawang.",
+                                    "gambar": []
+                                }
+                            },
+                            "kalori": 250,
+                            "karbohidrat": 5,
+                            "lemak": 20,
+                            "protein": 12,
+                            "metode_memasak": "goreng",
+                            "similarity_score": 0.4,
+                            "gambar": "https://..."
+                        }
+                    ]
+                }
+            }
+        },
+        '400': {
+            'description': 'Gambar tidak ditemukan dalam request'
+        }
+    }
+})
 def recommend_route():
     print('request')
     print(request.files)
