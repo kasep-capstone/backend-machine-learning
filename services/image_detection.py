@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-model = YOLO("./models/best.pt")
+model = YOLO("./models/best.pt") 
 
 def detect_ingredients_from_image(image_path):
     results = model(image_path)
