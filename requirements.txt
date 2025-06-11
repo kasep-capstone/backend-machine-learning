@@ -7,3 +7,4 @@ ultralytics
 flasgger
 python-dotenv
 SQLAlchemy 
+psycopg2-binary
