@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pkl
+*.pt
+*.jpg
+*.png
+*.mp4
+venv/
+*.zip
+*.tar.gz
+datasets/
