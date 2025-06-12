@@ -1,8 +1,7 @@
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from utils.preprocess import preprocess_ingredients, parse_ingredients_list, parse_cooking_steps
-
+from utils.preprocess import preprocess_ingredients, parse_ingredients_list, parse_list_field
 
 def build_vectorizer(df):
     # Pastikan kolom labelBahan ada
@@ -51,16 +50,17 @@ def recommend(df, tfidf_matrix, vectorizer, detected_ingredients, top_k=5, thres
                     }
 
             recommendations.append({
+                'receipt_id': row['receipt_id'],
                 'judul': row['judul'],
-                'bahan': parse_ingredients_list(row['labelBahan']),
+                'bahan': bahan_asli,
                 'bahan_tidak_terdeteksi': bahan_tidak_terdeteksi,
+                'metode_memasak': parse_list_field(row.get('metode_memasak', '')),
                 'langkah': langkah_dict,
                 'gambar': row.get('gambar', 'N/A'),
                 'kalori': row.get('kalori', 'N/A'),
                 'karbohidrat': row.get('karbohidrat', 'N/A'),
                 'lemak': row.get('lemak', 'N/A'),
                 'protein': row.get('protein', 'N/A'),
-                'metode_memasak': row.get('metode_memasak', 'N/A'),
                 'deskripsi': row.get('deskripsi', ''),
                 'similarity_score': round(similarities[idx], 4)
             })

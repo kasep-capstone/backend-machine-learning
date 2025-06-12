@@ -7,17 +7,6 @@ from flasgger.utils import swag_from
 
 recommend_bp = Blueprint('recommend', __name__)
 
-df_global = None
-vectorizer_global = None
-matrix_global = None
-
-@recommend_bp.before_app_request
-def load_model():
-    global df_global, vectorizer_global, matrix_global
-    if df_global is None:
-        df = load_recipe_data()
-        df_global, vectorizer_global, matrix_global = build_vectorizer(df)
-
 @recommend_bp.route('/recommend', methods=['POST'])
 @swag_from({
     'tags': ['Recommendation'],
@@ -41,6 +30,7 @@ def load_model():
                     "ingredients_detected": ["telur", "bawang merah"],
                     "data": [
                         {
+                            "resep_id": "12345",
                             "judul": "Telur Dadar Sehat",
                             "bahan": ["telur", "bawang merah", "garam"],
                             "bahan_tidak_terdeteksi": ["garam"],
@@ -80,8 +70,11 @@ def recommend_route():
 
     if not ingredients:
         return jsonify({"error": "No ingredients detected from image"}), 400
-
-    result = recommend(df_global, matrix_global, vectorizer_global, ingredients)
+    
+    df = load_recipe_data()
+    df_vector, vectorizer, matrix = build_vectorizer(df)
+    result = recommend(df_vector, matrix, vectorizer, ingredients)
+    
     return jsonify({
         "status": "success",
         "ingredients_detected": ingredients,

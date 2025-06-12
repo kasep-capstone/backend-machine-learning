@@ -29,6 +29,7 @@ def load_recipe_data():
     df = pd.read_sql_query(query, engine)
 
     recipes = defaultdict(lambda: {
+        "resep_id": "",
         "judul": "",
         "labelBahan": "",
         "gambar": "",
@@ -46,6 +47,7 @@ def load_recipe_data():
 
     for _, row in df.iterrows():
         r = recipes[row["receipt_id"]]
+        r["receipt_id"] = row["receipt_id"]
         r["judul"] = row["judul"]
         r["labelBahan"] = row["labelBahan"]
         r["gambar"] = row["gambar"]

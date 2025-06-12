@@ -8,5 +8,4 @@ flasgger
 python-dotenv
 SQLAlchemy 
 psycopg2-binary
-gevent==23.9.1
-flask_cors
+opencv-python-headless

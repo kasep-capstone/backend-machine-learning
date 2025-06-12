@@ -3,10 +3,11 @@ import ast
 import pandas as pd
 
 def preprocess_ingredients(ingredients_text):
-    if pd.isna(ingredients_text): return ""
+    if pd.isna(ingredients_text):
+        return ""
     ingredients = str(ingredients_text).lower()
-    ingredients = re.sub(r'[^\w\s,]', ' ', ingredients)
-    ingredients = re.sub(r'\s+', ' ', ingredients)
+    ingredients = re.sub(r'[^\w\s,]', ' ', ingredients)  
+    ingredients = re.sub(r'\s+', ' ', ingredients)      
     return ingredients.strip()
 
 def parse_cooking_steps(steps_text):
@@ -32,11 +33,22 @@ def parse_cooking_steps(steps_text):
         return {}
 
 def parse_ingredients_list(ingredients_text):
-    if pd.isna(ingredients_text): return []
+    if isinstance(ingredients_text, list):
+        return ingredients_text
+    if pd.isna(ingredients_text):
+        return []
     try:
-        if isinstance(ingredients_text, str) and ingredients_text.startswith("['"):
-            return ast.literal_eval(ingredients_text)
-        else:
-            return [str(ingredients_text)]
+        result = ast.literal_eval(ingredients_text)
+        return result if isinstance(result, list) else [str(result)]
     except:
         return [str(ingredients_text)]
+
+def parse_list_field(text):
+    """Parsing untuk kolom list seperti metode_memasak"""
+    if pd.isna(text):
+        return []
+    try:
+        result = ast.literal_eval(text)
+        return result if isinstance(result, list) else [str(result)]
+    except:
+        return [str(text)]
