@@ -9,3 +9,4 @@ python-dotenv
 SQLAlchemy 
 psycopg2-binary
 opencv-python-headless
+flask-cors
